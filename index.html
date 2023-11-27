@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git och GitHub Setup Guide</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+      background-color: #fff; 
+      color: #333;
+    }
+    body.dark-mode {
+      background-color: #333;
+      color: #fff;
+    }
+    h1, h2, h3 {
+      color: #8b4513;
+    }
+    ol {
+      list-style: decimal;
+      margin-bottom: 20px;
+    }
+    a {
+      text-decoration: none;
+    }
+    code {
+      background-color: #666;
+      padding: 2px 4px;
+      border: 1px solid #ddd;
+      color: #fff;
+    }
+    body.dark-mode code {
+      background-color: #000;
+      color: #fff;
+      border: 1px solid #666;
+    }
+    #toggleBtn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #8b4513;
+    border: 1px solid #8b4513;
+    color: #fff;
+  }
+    #toggleIcon {
+      margin-right: 5px;
+      font-size: 20px;
+    }
+    body.dark-mode #toggleBtn {
+      background-color: #333;
+      border: 1px solid #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Git och GitHub Setup Guide - Lexicon</h1>
+
+  <h2>Steg 1: Skapa ett GitHub-konto och ett repository</h2>
+  <ol>
+    <li>Gå till <a href="https://github.com/" target="_blank">GitHub</a> och skapa ett konto om du inte redan har ett.</li>
+    <li>Logga in och skapa ett nytt repository.</li>
+    <li>Ge ditt repository ett namn, en beskrivning och andra inställningar.</li>
+    <li>Klicka på "Create repository" för att skapa det.</li>
+  </ol>
+
+  <h2>Steg 2: Installera Git och OpenSSH</h2>
+  <ol>
+    <li>Ladda ner <a href="https://git-scm.com/download/win" target="_blank">Git för Windows</a> och följ installationsanvisningarna.</li>
+    <li>Öppna en administratörskommandotolk och installera OpenSSH med kommandot: <code>choco install openssh</code>.</li>
+  </ol>
+
+  <h2>Steg 3: Öppna Windows Terminal</h2>
+  <p>Öppna Windows Terminal genom att söka efter det i startmenyn eller högerklicka på skrivbordet och välja "Windows Terminal".</p>
+
+  <h2>Steg 4: Generera ett SSH-nyckelpar</h2>
+  <p>Öppna Windows Terminal och använd följande kommando för att generera ett SSH-nyckelpar. Ersätt "din_email@example.com" med din GitHub-e-postadress:</p>
+  <code>ssh-keygen -t rsa -b 4096 -C "din_email@example.com"</code>
+
+  <h2>Steg 5: Lägg till din privata nyckel i SSH-agenten</h2>
+  <p>Lägg till din privata nyckel med kommandot:</p>
+  <code>ssh-add ~/.ssh/id_rsa</code>
+
+  <h2>Åtgärda Fel: Åtgärda SSH-agentfel (error: 1058)</h2>
+  <ol>
+    <li>Starta om Windows Terminal som administratör.</li>
+    <li>Starta tjänsten manuellt med kommandot: <code>sc start ssh-agent</code>.</li>
+    <li>Verifiera att tjänsten är igång genom att öppna Windows Uppgiftshanterare och leta efter <code>ssh-agent.exe</code> under fliken "Tjänster".</li>
+    <li>Återställ tjänsten med kommandot: <code>sc config ssh-agent binpath= "C:\Windows\System32\svchost.exe -k netsvcs -p"</code>.</li>
+    <li>Kontrollera systemhändelser och användarrättigheter om problemet kvarstår.</li>
+  </ol>
+
+  <h2>Steg 6: Kopiera SSH-nyckeln till Urklipp</h2>
+  <p>Använd kommandot <code>clip</code> för att kopiera SSH-nyckeln till urklipp:</p>
+  <code>clip &lt; ~/.ssh/id_rsa.pub</code>
+
+  <h2>Steg 7: Lägg till SSH-nyckeln på GitHub</h2>
+  <ol>
+    <li>Gå till GitHub och logga in på ditt konto.</li>
+    <li>Klicka på ditt profilavatar i det övre högra hörnet och välj "Settings".</li>
+    <li>Välj "SSH and GPG keys" i den vänstra menyn.</li>
+    <li>Klicka på "New SSH key" och klistra in den kopierade nyckeln från urklippet.</li>
+    <li>Ge nyckeln en beskrivning och spara den.</li>
+  </ol>
+
+  <h2>Steg 8: Konfigurera Git-användarinformation</h2>
+  <p>Ställ in ditt användarnamn och e-postadress lokalt med följande kommandon:</p>
+  <code>git config --global user.name "Ditt Namn"</code><br>
+  <code>git config --global user.email "din_email@example.com"</code>
+
+  <h2>Steg 9: Verifiera inställningarna</h2>
+  <p>Verifiera dina inställningar med följande kommandon:</p>
+  <code>git config --global user.name</code><br>
+  <code>git config --global user.email</code>
+
+  <h2>Steg 10: Klona ett GitHub-repo med SSH</h2>
+  <p>Testa din konfiguration genom att klona ett GitHub-repositorium med SSH-länken:</p>
+  <code>git clone git@github.com:anvandarnamn/repo.git</code><br>
+  (Ersätt "anvandarnamn" med ditt GitHub-användarnamn och "repo" med namnet på det GitHub-repositorium du vill klona.)
+
+  <div id="toggleBtn" onclick="toggleDarkMode()">Toggle 🌙</div>
+
+  <script>
+    function toggleDarkMode() {
+      const body = document.body;
+      const toggleBtn = document.getElementById('toggleBtn');
+  
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        toggleBtn.innerHTML = '🌞';
+      } else {
+        toggleBtn.innerHTML = '🌙';
+      }
+  
+      const isDarkMode = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+    }
+  
+    const savedDarkMode = localStorage.getItem('darkMode');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    if (savedDarkMode === 'true') {
+      document.body.classList.add('dark-mode');
+      toggleBtn.innerHTML = '🌞'; 
+    } else {
+      toggleBtn.innerHTML = '🌙';
+    }
+  </script>
+</body>
+</html>
