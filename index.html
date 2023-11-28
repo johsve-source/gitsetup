@@ -93,9 +93,8 @@
   <ol>
     <li>Starta om Windows Terminal som administratör.</li>
     <li>Starta tjänsten manuellt med kommandot: <code>sc start ssh-agent</code>.</li>
-    <li>Verifiera att tjänsten är igång genom att öppna Windows Uppgiftshanterare och leta efter <code>ssh-agent.exe</code> under fliken "Tjänster".</li>
-    <li>Återställ tjänsten med kommandot: <code>sc config ssh-agent binpath= "C:\Windows\System32\svchost.exe -k netsvcs -p"</code>.</li>
-    <li>Kontrollera systemhändelser och användarrättigheter om problemet kvarstår.</li>
+    <p>Lägg till din privata nyckel med kommandot:</p>
+    <code>ssh-add ~/.ssh/id_rsa</code>
   </ol>
 
   <h2>Steg 6: Kopiera SSH-nyckeln till Urklipp</h2>
